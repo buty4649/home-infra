@@ -1,0 +1,20 @@
+inventory_providers:
+  file:
+    path: 'hosts.yml'
+
+property_providers:
+  - add_default:
+      properties:
+        preferred_driver: mitamae
+  - ruby_script:
+      name: set-attributes
+      file: attributes.rb
+
+driver_options:
+  mitamae:
+    mitamae_path: /usr/local/bin/mitamae
+    mitamae_options: ['--log-level', 'debug']
+    mitamae_prepare_script: |
+      wget -O /usr/local/bin/mitamae https://github.com/itamae-kitchen/mitamae/releases/download/v1.12.7/mitamae-aarch64-linux &&
+      echo "293e122a779382ef2ef5e4b13c54d353869ccc68502de7cc63ef32f881c5229c  /usr/local/bin/mitamae" | shasum -a 256 -c &&
+      chmod +x /usr/local/bin/mitamae

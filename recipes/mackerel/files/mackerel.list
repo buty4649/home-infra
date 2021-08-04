@@ -1,0 +1,1 @@
+deb [arch=amd64,arm64] http://apt.mackerel.io/v2/ mackerel contrib
