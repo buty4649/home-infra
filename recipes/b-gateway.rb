@@ -6,3 +6,7 @@ include_recipe 'mackerel'
 
 # hochoに必要
 package 'rsync'
+
+package 'wpasupplicant' do
+  action :remove
+end
