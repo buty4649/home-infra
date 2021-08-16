@@ -23,6 +23,11 @@ template '/etc/mackerel-agent/mackerel-agent.conf' do
   notifies :restart, 'service[mackerel-agent]'
 end
 
+execute 'mkr plugin install' do
+  command 'mkr plugin install buty4649/mackerel-plugin-thermal'
+  not_if 'test -f /opt/mackerel-agent/plugins/meta/buty4649/mackerel-plugin-thermal/release_tag'
+end
+
 service 'mackerel-agent' do
   action [:start, :enable]
 end
