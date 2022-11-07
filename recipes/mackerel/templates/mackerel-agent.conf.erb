@@ -1,10 +1,8 @@
 apikey = "<%= @mackerel_api_key %>"
+include = "/etc/mackerel-agent/conf.d/*.conf"
 
 [plugin.metrics.linux]
 command = "mackerel-plugin-linux"
 
 [plugin.metrics.uptime]
 command = "mackerel-plugin-uptime"
-
-[plugin.metrics.thermal]
-command = "/opt/mackerel-agent/plugins/bin/mackerel-plugin-thermal"

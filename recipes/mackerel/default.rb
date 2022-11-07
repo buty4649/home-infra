@@ -16,6 +16,8 @@ end
   package name
 end
 
+directory '/etc/mackerel-agent/conf.d'
+
 template '/etc/mackerel-agent/mackerel-agent.conf' do
   variables(
     mackerel_api_key: node['mackerel_api_key']
@@ -31,3 +33,13 @@ end
 service 'mackerel-agent' do
   action [:start, :enable]
 end
+
+define :mkr_plugin do
+  name = params[:name]
+  execute "mkr plugin install #{name}" do
+    command "mkr plugin install #{name}"
+    not_if "test -f /opt/mackerel-agent/plugins/meta/#{name}/release_tag"
+  end
+end
+
+include_recipe 'plugin-pinging'
