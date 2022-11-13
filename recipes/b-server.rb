@@ -4,9 +4,10 @@ include_recipe 'unattended_upgrades'
 include_recipe 'timezone'
 include_recipe 'mackerel'
 
-# hochoに必要
-package 'rsync'
-
-package 'wpasupplicant' do
-  action :remove
+%w[install remove].each do |act|
+  node['packages'][act].each do |name|
+    package name do
+      action act.to_sym
+    end
+  end
 end
