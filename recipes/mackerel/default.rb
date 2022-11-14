@@ -25,21 +25,29 @@ template '/etc/mackerel-agent/mackerel-agent.conf' do
   notifies :restart, 'service[mackerel-agent]'
 end
 
-execute 'mkr plugin install' do
-  command 'mkr plugin install buty4649/mackerel-plugin-thermal'
-  not_if 'test -f /opt/mackerel-agent/plugins/meta/buty4649/mackerel-plugin-thermal/release_tag'
-end
-
 service 'mackerel-agent' do
   action [:start, :enable]
 end
 
-define :mkr_plugin do
+define :mkr_plugin, version: nil do
   name = params[:name]
-  execute "mkr plugin install #{name}" do
-    command "mkr plugin install #{name}"
-    not_if "test -f /opt/mackerel-agent/plugins/meta/#{name}/release_tag"
+  version = params[:version]
+  package_name = version ? "#{name}@#{version}" : name
+  release_tag_path = "/opt/mackerel-agent/plugins/meta/#{name}/release_tag"
+  release_tag = run_command("cat #{release_tag_path}")
+
+  if release_tag.exit_status == 0
+    execute "mkr plugin install #{name}" do
+      command "mkr plugin install --upgrade #{package_name}"
+      not_if { release_tag.stdout.chomp == version }
+    end
+  else
+    # Not installed
+    execute "mkr plugin install #{name}" do
+      command "mkr plugin install #{package_name}"
+    end
   end
 end
 
 include_recipe 'plugin-pinging'
+include_recipe 'plugin-thermal'

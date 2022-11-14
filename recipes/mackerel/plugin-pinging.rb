@@ -1,4 +1,6 @@
-mkr_plugin 'kazeburo/mackerel-plugin-pinging'
+mkr_plugin 'kazeburo/mackerel-plugin-pinging' do
+  version 'v0.0.7'
+end
 
 file '/etc/mackerel-agent/conf.d/pinging.conf' do
   action :create
