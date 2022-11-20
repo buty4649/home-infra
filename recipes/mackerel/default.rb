@@ -4,7 +4,7 @@ execute 'add apt key' do
 end
 
 remote_file '/etc/apt/sources.list.d/mackerel.list' do
-  notifies :run, 'execute[apt update]'
+  notifies :run, 'execute[apt update]', :immediately
 end
 
 %w[
@@ -34,17 +34,17 @@ define :mkr_plugin, version: nil do
   version = params[:version]
   package_name = version ? "#{name}@#{version}" : name
   release_tag_path = "/opt/mackerel-agent/plugins/meta/#{name}/release_tag"
-  release_tag = run_command("cat #{release_tag_path}")
+  release_tag = run_command("cat #{release_tag_path} || true")
 
-  if release_tag.exit_status == 0
-    execute "mkr plugin install #{name}" do
-      command "mkr plugin install --upgrade #{package_name}"
-      not_if { release_tag.stdout.chomp == version }
-    end
-  else
+  if release_tag.stdout.empty?
     # Not installed
     execute "mkr plugin install #{name}" do
       command "mkr plugin install #{package_name}"
+    end
+  else
+    execute "mkr plugin install #{name}" do
+      command "mkr plugin install --upgrade #{package_name}"
+      not_if { release_tag.stdout.chomp == version }
     end
   end
 end
