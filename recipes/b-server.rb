@@ -3,7 +3,6 @@ include_recipe 'hostname'
 include_recipe 'unattended_upgrades'
 include_recipe 'timezone'
 include_recipe 'local_user'
-include_recipe 'mackerel'
 
 %w[install remove].each do |act|
   node['packages'][act].each do |name|
@@ -12,3 +11,7 @@ include_recipe 'mackerel'
     end
   end
 end
+
+include_recipe 'mackerel'
+include_recipe 'snapd'
+include_recipe 'microk8s'

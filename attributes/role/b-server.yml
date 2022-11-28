@@ -1,0 +1,13 @@
+attributes:
+  packages:
+    install:
+      - jq
+      - rsync
+    remove:
+      - wpasupplicant
+  local_user:
+    name: buty4649
+    disable_users:
+      - pi
+run_list:
+  - recipes/b-server.rb
