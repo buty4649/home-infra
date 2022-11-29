@@ -15,3 +15,4 @@ end
 include_recipe 'mackerel'
 include_recipe 'snapd'
 include_recipe 'microk8s'
+include_recipe 'systemd-resolved'
