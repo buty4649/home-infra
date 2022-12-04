@@ -51,3 +51,7 @@ end
 
 include_recipe 'plugin-pinging'
 include_recipe 'plugin-thermal'
+
+if node['machine'] == 'NanoPi R4S'
+include_recipe 'plugin-rootfs'
+end

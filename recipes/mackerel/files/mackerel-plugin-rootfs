@@ -1,0 +1,42 @@
+#!/bin/bash
+
+GRAPH_PREFIX="filesystem.rootfs"
+
+graph() {
+  cat <<JSON
+# mackerel-agent-plugin
+{
+  "graphs": {
+    "${GRAPH_PREFIX}": {
+      "label": "rootfs",
+      "unit": "bytes",
+      "metrics": [
+        {
+          "name": "used",
+          "label": "used"
+        },
+        {
+          "name": "size",
+          "label": "size"
+        }
+      ]
+    }
+  }
+}
+JSON
+}
+
+metrics() {
+  local df=(`df -Pkl / | tail -1`)
+  local used=$(( ${df[2]} * 1024 ))
+  local size=$(( ${df[3]} * 1024 + $used ))
+  local ts=$(date +%s)
+  echo "${GRAPH_PREFIX}.used $used $ts"
+  echo "${GRAPH_PREFIX}.size $size $ts"
+}
+
+if [ "$MACKEREL_AGENT_PLUGIN_META" = 1 ];then
+  graph
+else
+  metrics
+fi
