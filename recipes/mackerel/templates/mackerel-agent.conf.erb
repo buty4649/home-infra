@@ -1,6 +1,9 @@
 apikey = "<%= @mackerel_api_key %>"
 include = "/etc/mackerel-agent/conf.d/*.conf"
 
+[filesystems]
+ignore = "/dev/loop.*"
+
 [plugin.metrics.linux]
 command = "mackerel-plugin-linux"
 
