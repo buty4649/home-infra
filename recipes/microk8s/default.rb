@@ -5,9 +5,7 @@ if node['machine'] == 'Raspberry Pi 4'
     action :edit
     block do |content|
       options = 'cgroup_enable=memory cgroup_memory=1'
-      unless content.include?(options)
-        content.insert(0, "#{options} ")
-      end
+      content.insert(0, "#{options} ") unless content.include?(options)
     end
     notifies :run, 'local_ruby_block[need_restart]', :immediately
   end
@@ -15,9 +13,9 @@ if node['machine'] == 'Raspberry Pi 4'
   local_ruby_block 'need_restart' do
     action :nothing
     block do
-      STDERR.puts "\e[31m**IMPORTANT**\e[0m"
-      STDERR.puts "\e[31mmicrok8s need cgroup.\e[0m"
-      STDERR.puts "\e[31mA reboot is required to activate the cgroup.\e[0m"
+      warn "\e[31m**IMPORTANT**\e[0m"
+      warn "\e[31mmicrok8s need cgroup.\e[0m"
+      warn "\e[31mA reboot is required to activate the cgroup.\e[0m"
       STDERR.puts
       exit
     end
@@ -27,6 +25,11 @@ end
 snap_package 'microk8s' do
   classic true
   channel '1.25'
+end
+
+execute 'alias microk8s.kubectl to kubectl' do
+  command 'snap alias microk8s.kubectl kubectl'
+  not_if 'test -e /snap/bin/kubectl'
 end
 
 local_user = node['local_user']['name']
