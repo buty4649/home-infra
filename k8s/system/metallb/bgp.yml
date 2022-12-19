@@ -1,0 +1,18 @@
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: external
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - default-addresspool
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: cluster-peer
+  namespace: metallb-system
+spec:
+  myASN: 65002
+  peerASN: 65001
+  peerAddress: 192.168.177.1
