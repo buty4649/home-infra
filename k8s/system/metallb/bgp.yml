@@ -6,6 +6,7 @@ metadata:
 spec:
   ipAddressPools:
   - default-addresspool
+  aggregationLength: 24
 ---
 apiVersion: metallb.io/v1beta2
 kind: BGPPeer
