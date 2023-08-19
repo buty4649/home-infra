@@ -1,6 +1,8 @@
-execute 'add apt key' do
-  command 'wget -q -O- https://mackerel.io/file/cert/GPG-KEY-mackerel-v2 | apt-key add -'
-  not_if 'apt-key finger | grep -q "9DD9 479D 06BA A713 2280  3AC1 6633 2B78 417E 73EA"'
+package 'gpg'
+
+execute 'add gpg key' do
+  command 'wget -q -O- https://mackerel.io/file/cert/GPG-KEY-mackerel-v2 | gpg --dearmor -o /etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
+  not_if 'test -f /etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
 end
 
 remote_file '/etc/apt/sources.list.d/mackerel.list' do
@@ -49,9 +51,6 @@ define :mkr_plugin, version: nil do
   end
 end
 
-include_recipe 'plugin-pinging'
-include_recipe 'plugin-thermal'
-
-if node['machine'] == 'NanoPi R4S'
-include_recipe 'plugin-rootfs'
+node.dig('mackerel', 'plugins')&.each do |name|
+  include_recipe "plugin-#{name}"
 end

@@ -4,15 +4,12 @@ attributes:
       - jq
       - rsync
     remove:
-      - wpasupplicant
+      - systemd-resolved
   local_user:
     name: buty4649
+    uid: 1203
+    gid: 1203
     disable_users:
-      - pi
-  mackerel:
-    plugins:
-      - pinging
-      - rootfs
-      - thermal
+      - debian
 run_list:
-  - recipes/b-server.rb
+  - recipes/pve.rb

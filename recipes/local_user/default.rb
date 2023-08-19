@@ -46,14 +46,8 @@ file "/etc/sudoers.d/#{username}" do
 end
 
 node['local_user']['disable_users'].each do |name|
-  user name do
-    shell '/sbin/nologin'
-    password '*'
-  end
-
-  key_path = "/home/#{name}/.ssh/authorized_keys"
-  execute 'Delete authorized_keys' do
-    command "rm -f #{key_path}"
-    only_if "test -f #{key_path}"
+  execute "Delete #{name} user" do
+    command "userdel -r #{name}"
+    only_if "id #{name} && ! pgrep -U #{name}"
   end
 end
