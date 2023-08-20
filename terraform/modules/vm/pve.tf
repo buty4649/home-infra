@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    proxmox = {
-      source  = "Telmate/proxmox"
-      version = "2.9.14"
-    }
-  }
-}
-
 resource "proxmox_vm_qemu" "this" {
   name        = var.name
   target_node = var.target_node
@@ -41,8 +32,4 @@ resource "proxmox_vm_qemu" "this" {
     model    = "virtio"
     firewall = true
   }
-}
-
-output "this" {
-  value = proxmox_vm_qemu.this.id
 }

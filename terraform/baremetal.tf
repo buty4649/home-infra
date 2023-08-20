@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    maas = {
-      source  = "maas/maas"
-      version = "~>1.0"
-    }
-  }
-}
-
 resource "maas_machine" "miyakojima" {
   hostname         = "miyakojima"
   domain           = "b-net.local"
@@ -22,5 +13,7 @@ import {
 resource "maas_instance" "miyakojima" {}
 
 output "miyakojima" {
-  value = "id: ${maas_machine.miyakojima.id} ips: ${join(", ", maas_instance.miyakojima.ip_addresses)}"
+  value = {
+    maas_id = maas_instance.miyakojima.id
+  }
 }
