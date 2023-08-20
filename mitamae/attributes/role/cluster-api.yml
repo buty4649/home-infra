@@ -11,6 +11,8 @@ attributes:
       - ubuntu
   mackerel:
     api_key: <%= secrets["mackerel_api_key"] %>
+  kind:
+    version: 0.20.0
 recipes:
   - host_inventory
   - apt
@@ -21,3 +23,4 @@ recipes:
   - packages
   - mackerel
   - docker
+  - kind
