@@ -15,6 +15,19 @@ driver_options:
     mitamae_path: /usr/local/bin/mitamae
     mitamae_options: ['--log-level', 'debug']
     mitamae_prepare_script: |
-      wget -O /usr/local/bin/mitamae https://github.com/itamae-kitchen/mitamae/releases/download/v1.14.0/mitamae-aarch64-linux &&
-      echo "99e2af51aafb6230c184fa92fb4995bd29dedc13d66242994ac01cdd52fe678c */usr/local/bin/mitamae" | shasum -a 256 -c &&
+      ARCH=$(uname -m)
+      wget -O /usr/local/bin/mitamae https://github.com/itamae-kitchen/mitamae/releases/download/v1.14.0/mitamae-${ARCH}-linux
+      case $ARCH in
+        x86_64)
+          echo "318968af9995c83929a5aedd3216e9c4ecb14db2e53340efaac4444ff5e18bde */usr/local/bin/mitamae"
+          ;;
+        aarch64)
+          echo "99e2af51aafb6230c184fa92fb4995bd29dedc13d66242994ac01cdd52fe678c */usr/local/bin/mitamae"
+          ;;
+        *)
+          echo "Unsupported architecture: $ARCH"
+          rm -f /usr/local/bin/mitamae
+          exit 1
+          ;;
+      esac | sha256sum -c -
       chmod +x /usr/local/bin/mitamae

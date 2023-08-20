@@ -1,10 +1,19 @@
-execute 'add apt key' do
-  command 'wget -q -O- https://mackerel.io/file/cert/GPG-KEY-mackerel-v2 | apt-key add -'
-  not_if 'apt-key finger | grep -q "9DD9 479D 06BA A713 2280  3AC1 6633 2B78 417E 73EA"'
+gpg_keyring_path = '/etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
+
+apt_gpg_key 'mackerel' do
+  uri 'https://mackerel.io/file/cert/GPG-KEY-mackerel-v2'
+  path gpg_keyring_path
 end
 
-remote_file '/etc/apt/sources.list.d/mackerel.list' do
-  notifies :run, 'execute[apt update]', :immediately
+apt_repository 'mackerel' do
+  types %w[deb]
+  uri 'http://apt.mackerel.io/v2/'
+  suites %w[mackerel]
+  components %w[contrib]
+  options({
+    arch: 'amd64,arm64',
+    'signed-by': gpg_keyring_path,
+  })
 end
 
 %w[
@@ -20,7 +29,7 @@ directory '/etc/mackerel-agent/conf.d'
 
 template '/etc/mackerel-agent/mackerel-agent.conf' do
   variables(
-    mackerel_api_key: node['mackerel_api_key']
+    mackerel_api_key: node['mackerel']['api_key']
   )
   notifies :restart, 'service[mackerel-agent]'
 end
@@ -49,9 +58,6 @@ define :mkr_plugin, version: nil do
   end
 end
 
-include_recipe 'plugin-pinging'
-include_recipe 'plugin-thermal'
-
-if node['machine'] == 'NanoPi R4S'
-include_recipe 'plugin-rootfs'
+node.dig('mackerel', 'plugins')&.each do |name|
+  include_recipe "plugin-#{name}"
 end

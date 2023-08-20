@@ -9,5 +9,20 @@ attributes:
     name: buty4649
     disable_users:
       - pi
-run_list:
-  - recipes/b-server.rb
+  mackerel:
+    plugins:
+      - pinging
+      - rootfs
+      - thermal
+recipes:
+  - host_inventory
+  - apt
+  - hostname
+  - unattended_upgrades
+  - timezone
+  - local_user
+  - packages
+  - mackerel
+  - snapd
+  - microk8s
+  - systemd-resolved
