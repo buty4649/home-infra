@@ -17,3 +17,12 @@ end
 execute 'kind create cluster' do
   not_if 'kind get clusters | grep -q kind'
 end
+
+directory '/etc/kubernetes'
+execute 'kind get kubeconfig' do
+  command 'kind get kubeconfig > /etc/kubernetes/admin.conf'
+end
+
+file '/etc/kubernetes/admin.conf' do
+  mode '0600'
+end
