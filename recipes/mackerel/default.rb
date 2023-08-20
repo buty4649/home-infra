@@ -29,7 +29,7 @@ directory '/etc/mackerel-agent/conf.d'
 
 template '/etc/mackerel-agent/mackerel-agent.conf' do
   variables(
-    mackerel_api_key: node['mackerel_api_key']
+    mackerel_api_key: node['mackerel']['api_key']
   )
   notifies :restart, 'service[mackerel-agent]'
 end
