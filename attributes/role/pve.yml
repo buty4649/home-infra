@@ -20,4 +20,5 @@ recipes:
   - local_user
   - packages
   - mackerel
-  - firmware
+#  - firmware
+  - proxmox

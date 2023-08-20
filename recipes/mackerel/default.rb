@@ -1,12 +1,19 @@
-package 'gpg'
+gpg_keyring_path = '/etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
 
-execute 'add gpg key' do
-  command 'wget -q -O- https://mackerel.io/file/cert/GPG-KEY-mackerel-v2 | gpg --dearmor -o /etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
-  not_if 'test -f /etc/apt/keyrings/mackerel-v2-archive-keyring.gpg'
+apt_gpg_key 'mackerel' do
+  uri 'https://mackerel.io/file/cert/GPG-KEY-mackerel-v2'
+  path gpg_keyring_path
 end
 
-remote_file '/etc/apt/sources.list.d/mackerel.list' do
-  notifies :run, 'execute[apt update]', :immediately
+apt_repository 'mackerel' do
+  types %w[deb]
+  uri 'http://apt.mackerel.io/v2/'
+  suites %w[mackerel]
+  components %w[contrib]
+  options({
+    arch: 'amd64,arm64',
+    'signed-by': gpg_keyring_path,
+  })
 end
 
 %w[
