@@ -20,3 +20,4 @@ recipes:
   - local_user
   - packages
   - mackerel
+  - docker
