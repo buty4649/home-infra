@@ -11,13 +11,13 @@ attributes:
     gid: 1203
     disable_users:
       - debian
-run_list:
-  - recipes/host_inventory/default.rb
-  - recipes/apt/default.rb
-  - recipes/hostname/default.rb
-  - recipes/unattended_upgrades/default.rb
-  - recipes/timezone/default.rb
-  - recipes/local_user/default.rb
-  - recipes/packages/default.rb
-  - recipes/mackerel/default.rb
-  - recipes/firmware/default.rb
+recipes:
+  - host_inventory
+  - apt
+  - hostname
+  - unattended_upgrades
+  - timezone
+  - local_user
+  - packages
+  - mackerel
+  - firmware

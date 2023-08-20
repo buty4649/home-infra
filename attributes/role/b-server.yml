@@ -14,14 +14,15 @@ attributes:
       - pinging
       - rootfs
       - thermal
-run_list:
-  - recipes/apt/default.rb
-  - recipes/hostname/default.rb
-  - recipes/unattended_upgrades/default.rb
-  - recipes/timezone/default.rb
-  - recipes/local_user/default.rb
-  - recipes/packages/default.rb
-  - recipes/mackerel/default.rb
-  - recipes/snapd/default.rb
-  - recipes/microk8s/default.rb
-  - recipes/systemd-resolved/default.rb
+recipes:
+  - host_inventory
+  - apt
+  - hostname
+  - unattended_upgrades
+  - timezone
+  - local_user
+  - packages
+  - mackerel
+  - snapd
+  - microk8s
+  - systemd-resolved
