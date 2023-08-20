@@ -1,7 +1,7 @@
-install_path = node.dig('cluster-api', 'install_path') || '/usr/local/bin/cluster-api'
+install_path = node.dig('cluster-api', 'install_path') || '/usr/local/bin/clusterctl'
 version = node['cluster-api']['version']
 
-execute 'Download cluster-api binary' do
+execute 'Download clusterctl binary' do
   command <<~COMMAND
     wget https://github.com/kubernetes-sigs/cluster-api/releases/download/v#{version}/clusterctl-linux-amd64 -O #{install_path}
   COMMAND

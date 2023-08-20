@@ -15,6 +15,15 @@ attributes:
     version: 0.20.0
   cluster-api:
     version: 1.5.0
+    config_path: /etc/cluster-api/clusterctl.yaml
+    config:
+      providers:
+        - name: maas
+          url: https://github.com/lbailleul/cluster-api-provider-maas/releases/latest/infrastructure-components.yaml
+          type: InfrastructureProvider
+      MAAS_ENDPOINT: http://maas.b-net.local:5240/MAAS/api/2.0/
+      MAAS_API_KEY: <%= secrets["maas_api_key"] %>
+    infrastructure: maas:v0.5.0
 recipes:
   - host_inventory
   - apt
