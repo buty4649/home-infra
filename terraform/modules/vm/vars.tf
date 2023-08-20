@@ -10,6 +10,14 @@ variable "domain" {
   type = string
 }
 
+variable "disk_size" {
+  type = string
+}
+
+variable "memory" {
+  type = number
+}
+
 variable "pve_host" {
   type = string
 }

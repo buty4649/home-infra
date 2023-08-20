@@ -9,7 +9,7 @@ resource "proxmox_vm_qemu" "this" {
   cpu              = "host"
   full_clone       = false
   kvm              = true
-  memory           = 8192
+  memory           = var.memory
   onboot           = true
   oncreate         = false
   pxe              = true
@@ -21,7 +21,7 @@ resource "proxmox_vm_qemu" "this" {
     backup   = true
     format   = "qcow2"
     iothread = 1
-    size     = "72G"
+    size     = var.disk_size
     ssd      = 1
     storage  = "local"
     type     = "scsi"
