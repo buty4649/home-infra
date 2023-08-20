@@ -26,3 +26,12 @@ module "vm" {
   pve_api_token_secret = var.pve_api_token_secret
   pve_verify_ssl       = !var.pve_tls_insecure
 }
+
+output "vms" {
+  value = [
+    for vm in module.vm : { "${vm.name}" = {
+      pve_id  = vm.pve_id
+      maas_id = vm.maas_id
+    } }
+  ]
+}

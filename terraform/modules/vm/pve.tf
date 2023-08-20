@@ -33,7 +33,3 @@ resource "proxmox_vm_qemu" "this" {
     firewall = true
   }
 }
-
-output "this" {
-  value = proxmox_vm_qemu.this.id
-}

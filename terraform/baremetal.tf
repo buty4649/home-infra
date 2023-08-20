@@ -13,5 +13,7 @@ import {
 resource "maas_instance" "miyakojima" {}
 
 output "miyakojima" {
-  value = "id: ${maas_machine.miyakojima.id} ips: ${join(", ", maas_instance.miyakojima.ip_addresses)}"
+  value = {
+    maas_id = maas_instance.miyakojima.id
+  }
 }
