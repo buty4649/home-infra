@@ -1,15 +1,3 @@
-variable "name" {
-  type = string
-}
-
-variable "target_node" {
-  type = string
-}
-
-variable "domain" {
-  type = string
-}
-
 variable "pve_host" {
   type = string
 }
@@ -22,12 +10,12 @@ variable "pve_api_token_name" {
   type = string
 }
 
-
 variable "pve_api_token_secret" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
-variable "pve_verify_ssl" {
+variable "pve_tls_insecure" {
   type    = bool
-  default = false
+  default = true
 }

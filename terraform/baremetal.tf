@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    maas = {
-      source  = "maas/maas"
-      version = "~>1.0"
-    }
-  }
-}
-
 resource "maas_machine" "miyakojima" {
   hostname         = "miyakojima"
   domain           = "b-net.local"
