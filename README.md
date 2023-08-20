@@ -1,4 +1,4 @@
-# home-infra-mitamae
+# home-infra
 
 @buty4649 の自宅インフラを構成管理するリポジトリ
 
