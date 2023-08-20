@@ -15,4 +15,13 @@ attributes:
       - rootfs
       - thermal
 run_list:
-  - recipes/b-server.rb
+  - recipes/apt/default.rb
+  - recipes/hostname/default.rb
+  - recipes/unattended_upgrades/default.rb
+  - recipes/timezone/default.rb
+  - recipes/local_user/default.rb
+  - recipes/packages/default.rb
+  - recipes/mackerel/default.rb
+  - recipes/snapd/default.rb
+  - recipes/microk8s/default.rb
+  - recipes/systemd-resolved/default.rb

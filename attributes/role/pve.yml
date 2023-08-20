@@ -12,4 +12,12 @@ attributes:
     disable_users:
       - debian
 run_list:
-  - recipes/pve.rb
+  - recipes/host_inventory/default.rb
+  - recipes/apt/default.rb
+  - recipes/hostname/default.rb
+  - recipes/unattended_upgrades/default.rb
+  - recipes/timezone/default.rb
+  - recipes/local_user/default.rb
+  - recipes/packages/default.rb
+  - recipes/mackerel/default.rb
+  - recipes/firmware/default.rb
