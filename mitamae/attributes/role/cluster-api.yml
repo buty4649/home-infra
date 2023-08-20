@@ -1,0 +1,22 @@
+attributes:
+  packages:
+    install:
+      - jq
+      - rsync
+  local_user:
+    name: buty4649
+    uid: 1203
+    gid: 1203
+    disable_users:
+      - ubuntu
+  mackerel:
+    api_key: <%= secrets["mackerel_api_key"] %>
+recipes:
+  - host_inventory
+  - apt
+  - hostname
+  - unattended_upgrades
+  - timezone
+  - local_user
+  - packages
+  - mackerel
