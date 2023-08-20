@@ -13,6 +13,8 @@ attributes:
     api_key: <%= secrets["mackerel_api_key"] %>
   kind:
     version: 0.20.0
+  cluster-api:
+    version: 1.5.0
 recipes:
   - host_inventory
   - apt
@@ -24,3 +26,4 @@ recipes:
   - mackerel
   - docker
   - kind
+  - cluster-api
