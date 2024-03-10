@@ -6,9 +6,9 @@ end
 
 file '/etc/mackerel-agent/conf.d/rootfs.conf' do
   action :create
-  content <<~EOL
+  content <<~CONF
     [plugin.metrics.rootfs]
     command = "/usr/local/bin/mackerel-plugin-rootfs"
-  EOL
+  CONF
   notifies :reload, 'service[mackerel-agent]'
 end

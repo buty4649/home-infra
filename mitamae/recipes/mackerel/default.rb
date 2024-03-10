@@ -11,9 +11,9 @@ apt_repository 'mackerel' do
   suites %w[mackerel]
   components %w[contrib]
   options({
-    arch: 'amd64,arm64',
-    'signed-by': gpg_keyring_path,
-  })
+            arch: 'amd64,arm64',
+            'signed-by': gpg_keyring_path
+          })
 end
 
 %w[
@@ -35,7 +35,7 @@ template '/etc/mackerel-agent/mackerel-agent.conf' do
 end
 
 service 'mackerel-agent' do
-  action [:start, :enable]
+  action %i[start enable]
 end
 
 define :mkr_plugin, version: nil do
@@ -59,5 +59,5 @@ define :mkr_plugin, version: nil do
 end
 
 node.dig('mackerel', 'plugins')&.each do |name|
-  include_recipe "plugin-#{name}"
+  include_recipe "plugin_#{name}"
 end
