@@ -25,6 +25,10 @@ Style/NumericPredicate:
   Exclude:
     - recipes/**/*.rb
 
+Style/PerlBackrefs:
+  Exclude:
+    - recipes/**/*.rb
+
 Metrics/BlockLength:
   Exclude:
     - recipes/**/*.rb
