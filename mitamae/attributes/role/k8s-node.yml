@@ -17,6 +17,8 @@ attributes:
   containerd:
     version: 1.7.13
     cni_version: 1.4.0
+  k8s:
+    version: 1.29
 recipes:
   - stdlib
   - host_inventory
@@ -27,3 +29,4 @@ recipes:
   - packages
   - mackerel
   - containerd
+  - k8s
