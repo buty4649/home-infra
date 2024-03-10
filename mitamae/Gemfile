@@ -4,3 +4,7 @@ gem 'hocho'
 gem 'ed25519'
 gem 'bcrypt_pbkdf'
 gem 'itamae-secrets'
+
+group 'development' do
+  gem 'rubocop'
+end

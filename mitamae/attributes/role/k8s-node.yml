@@ -25,3 +25,4 @@ recipes:
   - local_user
   - packages
   - mackerel
+  - containerd
