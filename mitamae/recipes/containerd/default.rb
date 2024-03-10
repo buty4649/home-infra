@@ -1,16 +1,16 @@
-version = node['containerd']['version']
 arch = case node['kernel']['machine']
        when 'x86_64' then 'amd64'
        when 'aarch64' then 'arm64'
        end
-dest_dir = '/usr/local/bin'
-containerd_download_url = "https://github.com/containerd/containerd/releases/download/v#{version}/containerd-#{version}-linux-#{arch}.tar.gz"
 
-execute "download and unarchive #{containerd_download_url}" do
-  tempfile = Tempfile.new('mitaimae-unarchive')
-  command "wget -O- '#{tempfile.path}' #{containerd_download_url} | tar -C #{dest_dir} -zxvf - --strip-components=1"
-  not_if "test -f #{dest_dir}/containerd && containerd --version | grep -q ' v#{version} '"
+unarchive 'containerd' do
+  version = node['containerd']['version']
+  download_url = "https://github.com/containerd/containerd/releases/download/v#{version}/containerd-#{version}-linux-#{arch}.tar.gz"
 
+  src download_url
+  dest '/usr/local/bin'
+  strip_components 1
+  not_if "test -f /usr/local/bin/containerd && containerd --version | grep -q ' v#{version} '"
   notifies :restart, 'service[containerd]'
 end
 
@@ -20,4 +20,14 @@ end
 
 service 'containerd' do
   action %i[enable start]
+end
+
+directory '/opt/cni/bin'
+
+unarchive 'CNI plugins' do
+  version = node['containerd']['cni_version']
+  download_url = "https://github.com/containernetworking/plugins/releases/download/v#{version}/cni-plugins-linux-#{arch}-v#{version}.tgz"
+
+  src download_url
+  dest '/opt/cni/bin'
 end

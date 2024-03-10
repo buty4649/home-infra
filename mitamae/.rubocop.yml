@@ -21,6 +21,10 @@ Style/HashSyntax:
   Exclude:
     - recipes/**/*.rb
 
+Style/NumericPredicate:
+  Exclude:
+    - recipes/**/*.rb
+
 Metrics/BlockLength:
   Exclude:
     - recipes/**/*.rb

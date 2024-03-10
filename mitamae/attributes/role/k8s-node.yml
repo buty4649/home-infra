@@ -16,6 +16,7 @@ attributes:
       - thermal
   containerd:
     version: 1.7.13
+    cni_version: 1.4.0
 recipes:
   - stdlib
   - host_inventory
