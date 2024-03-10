@@ -14,6 +14,12 @@ unarchive 'containerd' do
   notifies :restart, 'service[containerd]'
 end
 
+directory '/etc/containerd'
+
+remote_file '/etc/containerd/config.toml' do
+  notifies :restart, 'service[containerd]'
+end
+
 remote_file '/etc/systemd/system/containerd.service' do
   notifies :run, 'execute[systemctl daemon-reload]', :immediately
 end
