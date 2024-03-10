@@ -45,7 +45,7 @@ file "/etc/sudoers.d/#{username}" do
   content "#{username} ALL=NOPASSWD: ALL\n"
 end
 
-node['local_user']['disable_users'].each do |name|
+node['local_user']['disable_users']&.each do |name|
   execute "Delete #{name} user" do
     command "userdel -r #{name}"
     only_if "id #{name} && ! pgrep -U #{name}"
