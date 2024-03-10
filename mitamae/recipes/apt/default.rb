@@ -25,6 +25,7 @@ define :apt_repository, deb822: false, path: nil, types:%w[deb], uri: nil, suite
   if deb822
     template path do
       source 'templates/deb822.erb'
+      mode '0644'
       variables(
         types: types,
         uri: uri,
@@ -42,6 +43,7 @@ define :apt_repository, deb822: false, path: nil, types:%w[deb], uri: nil, suite
     end
     template path do
       source 'templates/legacy.erb'
+      mode '0644'
       variables(
         types: types,
         uri: uri,
