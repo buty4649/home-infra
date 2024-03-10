@@ -3,6 +3,7 @@ attributes:
     install:
       - jq
       - rsync
+      - vim
     remove:
       - wpasupplicant
   local_user:
