@@ -13,7 +13,7 @@ node.dig('pve', 'users')&.each do |params|
   type = params['type']
   userid = [name, type].join('@')
   password = params['password']
-  acl = params['acl']
+  params['acl']
   role = params['role']
 
   execute "pveum user add #{userid}" do

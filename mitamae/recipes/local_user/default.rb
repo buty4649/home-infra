@@ -16,11 +16,10 @@ directory "/home/#{username}/.ssh" do
   mode '0700'
 end
 
-file "/home/#{username}/.ssh/authorized_keys" do
+remote_file "/home/#{username}/.ssh/authorized_keys" do
   owner username
   group groupname
   mode '0600'
-  content 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC80CcHijYIWT9/PoeGaVL7yh8jkWJqVoUdFjxaw8aUoqXWmG5/GO3/XnKwupfHI/w+ufEnnagQOTmg6DJntVpvhRCT+76uStYia2fPVnBoKSIn7xZQcL3oL7yVesqlb7tYLzHE1oiVclS9npZ8lukAbxtuJ8YVphRmb54Z82ZYUL66V8b9ZZb0nNiBTqT7hL6CT1n++XU01HcOrjx8S0We0z87bX/pLscLKJieQZlOA/N1nvkuBp67Gmsbmj8yJ6djWSsTx8VDDqFqY/xEUW7odlASv5K0zhHkleRmLBI10KHsx+MGtsaVwH2CKi2Qckam+4Zh5ttR/njUC5KUXJI/'
 end
 
 define 'add_group', user: nil do
@@ -45,7 +44,7 @@ file "/etc/sudoers.d/#{username}" do
   content "#{username} ALL=NOPASSWD: ALL\n"
 end
 
-node['local_user']['disable_users'].each do |name|
+node['local_user']['disable_users']&.each do |name|
   execute "Delete #{name} user" do
     command "userdel -r #{name}"
     only_if "id #{name} && ! pgrep -U #{name}"

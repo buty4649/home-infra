@@ -11,9 +11,9 @@ apt_repository 'proxmox' do
   suites [node.lsb.codename]
   components %w[pve-no-subscription]
   options({
-    arch: 'amd64',
-    'signed-by': gpg_keyring_path,
-  })
+            arch: 'amd64',
+            'signed-by': gpg_keyring_path
+          })
 end
 
 # ifupdown2のインストールがコケるので先につくっておく
@@ -39,7 +39,6 @@ linux_images.each do |name|
     action :remove
   end
 end
-
 
 # ifupdown2とバッティングするので対処
 package 'systemd-resolved' do

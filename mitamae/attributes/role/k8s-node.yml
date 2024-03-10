@@ -1,0 +1,32 @@
+attributes:
+  packages:
+    install:
+      - jq
+      - rsync
+      - vim
+    remove:
+      - wpasupplicant
+  local_user:
+    name: buty4649
+    disable_users:
+      - pi
+  mackerel:
+    plugins:
+      - rootfs
+      - thermal
+  containerd:
+    version: 1.7.13
+    cni_version: 1.4.0
+  k8s:
+    version: 1.29
+recipes:
+  - stdlib
+  - host_inventory
+  - hostname
+  - unattended_upgrades
+  - timezone
+  - local_user
+  - packages
+  - mackerel
+  - containerd
+  - k8s

@@ -1,4 +1,4 @@
-timezone='Asia/Tokyo'
+timezone = 'Asia/Tokyo'
 
 execute "set timezone to #{timezone}" do
   command "timedatectl set-timezone '#{timezone}'"

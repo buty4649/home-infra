@@ -16,7 +16,7 @@ if node['machine'] == 'Raspberry Pi 4'
       warn "\e[31m**IMPORTANT**\e[0m"
       warn "\e[31mmicrok8s need cgroup.\e[0m"
       warn "\e[31mA reboot is required to activate the cgroup.\e[0m"
-      STDERR.puts
+      $stderr.puts
       exit
     end
   end

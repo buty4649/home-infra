@@ -1,5 +1,5 @@
 package 'unattended-upgrades'
 
 service 'unattended-upgrades' do
-  action [:start, :enable]
+  action %i[start enable]
 end
