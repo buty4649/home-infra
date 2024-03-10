@@ -36,4 +36,5 @@ unarchive 'CNI plugins' do
 
   src download_url
   dest '/opt/cni/bin'
+  not_if "test -f /opt/cni/bin/dummy && /opt/cni/bin/dummy --version 2>&1 | grep -q ' v#{version}'"
 end
