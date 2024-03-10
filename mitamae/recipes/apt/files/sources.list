@@ -1,9 +1,0 @@
-deb http://ports.ubuntu.com/ubuntu-ports/ focal main multiverse restricted universe
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-backports main multiverse restricted universe
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-proposed main multiverse restricted universe
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-security main multiverse restricted universe
-deb http://ports.ubuntu.com/ubuntu-ports/ focal-updates main multiverse restricted universe
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal main multiverse restricted universe
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-backports main multiverse restricted universe
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-proposed main multiverse restricted universe
-deb-src http://ports.ubuntu.com/ubuntu-ports/ focal-updates main multiverse restricted universe

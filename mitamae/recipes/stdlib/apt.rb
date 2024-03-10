@@ -1,7 +1,3 @@
-# remote_file '/etc/apt/sources.list' do
-#   notifies :run, 'execute[apt update]'
-# end
-
 execute 'apt update' do
   command 'apt-get update'
   action :nothing
@@ -24,7 +20,7 @@ define :apt_repository, deb822: false, path: nil, types:%w[deb], uri: nil, suite
 
   if deb822
     template path do
-      source 'templates/deb822.erb'
+      source 'templates/apt/deb822.erb'
       mode '0644'
       variables(
         types: types,
@@ -42,7 +38,7 @@ define :apt_repository, deb822: false, path: nil, types:%w[deb], uri: nil, suite
       " [#{str.join(' ')}]"
     end
     template path do
-      source 'templates/legacy.erb'
+      source 'templates/apt/legacy.erb'
       mode '0644'
       variables(
         types: types,

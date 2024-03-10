@@ -14,9 +14,11 @@ attributes:
     plugins:
       - rootfs
       - thermal
+  containerd:
+    version: 1.7.13
 recipes:
+  - stdlib
   - host_inventory
-  - apt
   - hostname
   - unattended_upgrades
   - timezone
