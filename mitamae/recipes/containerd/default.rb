@@ -28,6 +28,16 @@ service 'containerd' do
   action %i[enable start]
 end
 
+download 'runc' do
+  version = node['containerd']['runc_version']
+  uri "https://github.com/opencontainers/runc/releases/download/v#{version}/runc.#{arch}"
+  dest '/usr/local/bin/runc'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  not_if "which runc && runc --version | grep -q 'runc version #{version}'"
+end
+
 directory '/opt/cni/bin'
 
 unarchive 'CNI plugins' do

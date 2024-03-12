@@ -7,7 +7,7 @@ end
 
 execute 'swap off' do
   command 'swapoff -a'
-  only_if 'swaponf -s | grep -q .'
+  only_if 'swapon -s | grep -q .'
 end
 
 version = node['k8s']['version']
