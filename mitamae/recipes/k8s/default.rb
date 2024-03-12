@@ -29,3 +29,28 @@ end
 %w[kubelet kubeadm kubectl].each do |name|
   package name
 end
+
+service 'systemd-modules-load' do
+  action :nothing
+end
+
+file '/etc/modules-load.d/netfilter.conf' do
+  content <<~CONTENT
+    br_netfilter
+  CONTENT
+  notifies :restart, 'service[systemd-modules-load]', :immediately
+end
+
+execute 'sysctl --system' do
+  command 'sysctl --system'
+  action :nothing
+end
+
+file '/etc/sysctl.d/99-sysctl.conf' do
+  block do |content|
+    content.gsub!(/^#net.ipv4.ip_forward=1/, 'net.ipv4.ip_forward=1')
+    content.gsub!(/^#net.ipv6.conf.all.forwarding=1/, 'net.ipv6.conf.all.forwarding=1')
+  end
+  action :edit
+  notifies :run, 'execute[sysctl --system]', :immediately
+end
