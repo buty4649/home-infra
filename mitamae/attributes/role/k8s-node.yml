@@ -3,6 +3,7 @@ attributes:
     install:
       - bash-completion
       - jq
+      - lvm2
       - rsync
       - vim
     remove:
