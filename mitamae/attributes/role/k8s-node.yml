@@ -1,6 +1,7 @@
 attributes:
   packages:
     install:
+      - bash-completion
       - jq
       - rsync
       - vim
