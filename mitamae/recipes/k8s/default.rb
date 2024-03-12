@@ -54,3 +54,14 @@ file '/etc/sysctl.d/99-sysctl.conf' do
   action :edit
   notifies :run, 'execute[sysctl --system]', :immediately
 end
+
+download 'calicoctl' do
+  version = node['k8s']['calicoctl_version']
+  arch = node['os']['arch']
+  uri "https://github.com/projectcalico/calico/releases/download/v#{version}/calicoctl-linux-#{arch}"
+  dest '/usr/local/bin/calicoctl'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  not_if "which calicoctl && calicoctl version | grep -q 'v#{version}'"
+end

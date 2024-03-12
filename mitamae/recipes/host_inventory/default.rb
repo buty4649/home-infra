@@ -12,3 +12,9 @@ result.stdout.split("\n").each do |line|
     node['lsb']['codename'] = Regexp.last_match[1]
   end
 end
+
+node['os'] ||= {}
+node['os']['arch'] = case node['kernel']['machine']
+                     when 'x86_64' then 'amd64'
+                     when 'aarch64' then 'arm64'
+                     end
