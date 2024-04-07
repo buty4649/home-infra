@@ -32,5 +32,6 @@ recipes:
   - local_user
   - packages
   - mackerel
+  - bird
   - containerd
   - k8s

@@ -1,0 +1,71 @@
+log syslog all;
+router id <%= @router_id %>;
+define local_community = (<%= @local_community %>);
+
+protocol device {
+  scan time 3;
+}
+
+protocol direct {
+  ipv4;
+  ipv6;
+  interface -"tun*", -"wl*", "*";
+}
+
+protocol kernel {
+  persist;
+  merge paths on;
+  graceful restart;
+  ipv4 { import all; };
+}
+
+protocol kernel {
+  ipv6 {};
+}
+
+protocol bgp uplink {
+  debug { states };
+  neighbor <%= @neighbor %> as <%= @neighbor_asn %>;
+  local as <%= @local_asn %>;
+  multihop;
+  allow local as 1;
+
+  ipv4 {
+    import filter {
+      if ( local_community ~ bgp_community ) then { reject; }
+      accept;
+    };
+
+    export filter {
+      if ( source = RTS_DEVICE ) then { reject; }
+      accept;
+    };
+  };
+}
+
+protocol bgp cilium {
+  debug { states };
+  neighbor ::1 as <%= @cilium_asn %>;
+  local as <%= @local_asn %>;
+  passive;
+  multihop;
+
+  ipv4 {
+    extended next hop;
+    import filter {
+      ifname = "lo";
+      bgp_community.add(local_community);
+      accept;
+    };
+    export none;
+  };
+
+  ipv6 {
+    import filter {
+      ifname = "lo";
+      bgp_community.add(local_community);
+      accept;
+    };
+    export none;
+  };
+}
