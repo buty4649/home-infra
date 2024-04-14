@@ -11,9 +11,13 @@ unarchive 'containerd' do
 end
 
 directory '/etc/containerd'
+state_dir = node.dig('containerd', 'state_dir') || '/run/containerd'
 
-remote_file '/etc/containerd/config.toml' do
+template '/etc/containerd/config.toml' do
   notifies :restart, 'service[containerd]'
+  variables(
+    state_dir: state_dir,
+  )
 end
 
 remote_file '/etc/systemd/system/containerd.service' do
