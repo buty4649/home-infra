@@ -1,8 +1,4 @@
-arch = case node['kernel']['machine']
-       when 'x86_64' then 'amd64'
-       when 'aarch64' then 'arm64'
-       end
-
+arch = node['os']['arch']
 unarchive 'containerd' do
   version = node['containerd']['version']
   download_url = "https://github.com/containerd/containerd/releases/download/v#{version}/containerd-#{version}-linux-#{arch}.tar.gz"
@@ -15,9 +11,13 @@ unarchive 'containerd' do
 end
 
 directory '/etc/containerd'
+state_dir = node.dig('containerd', 'state_dir') || '/run/containerd'
 
-remote_file '/etc/containerd/config.toml' do
+template '/etc/containerd/config.toml' do
   notifies :restart, 'service[containerd]'
+  variables(
+    state_dir: state_dir,
+  )
 end
 
 remote_file '/etc/systemd/system/containerd.service' do
@@ -26,6 +26,16 @@ end
 
 service 'containerd' do
   action %i[enable start]
+end
+
+download 'runc' do
+  version = node['containerd']['runc_version']
+  uri "https://github.com/opencontainers/runc/releases/download/v#{version}/runc.#{arch}"
+  dest '/usr/local/bin/runc'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  not_if "which runc && runc --version | grep -q 'runc version #{version}'"
 end
 
 directory '/opt/cni/bin'

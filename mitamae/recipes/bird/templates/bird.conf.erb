@@ -1,0 +1,97 @@
+log syslog all;
+router id <%= @router_id %>;
+define uplink_ip = <%= @uplink_ip %>;
+define uplink_asn = <%= @uplink_asn %>;
+define my_asn = <%= @my_asn %>;
+define cilium_asn = <%= @cilium_asn %>;
+define local_community = (my_asn, <%= @community_tag %>);
+define pod_cidr = <%= @pod_cidr %>;
+define service_cidr = <%= @service_cidr %>;
+define external_cidr = <%= @external_cidr %>;
+
+
+protocol device {
+  scan time 3;
+}
+
+protocol direct {
+  ipv4;
+  ipv6;
+  interface -"tun*", -"wl*", "*";
+}
+
+protocol kernel {
+  persist;
+  merge paths on;
+  graceful restart;
+  ipv4 {
+    import all;
+    export filter {
+      if ( source ~ [RTS_STATIC] ) then { accept; }
+      if ( net ~ pod_cidr ) then { accept; }
+      reject;
+    };
+  };
+}
+
+protocol kernel {
+  ipv6 {};
+}
+
+protocol static {
+  ipv4;
+  route service_cidr via "cilium_host";
+  route external_cidr via "cilium_host";
+}
+
+protocol bgp uplink {
+  debug all;
+  neighbor uplink_ip as uplink_asn;
+  local as my_asn;
+  allow local as 1;
+  multihop;
+
+  ipv4 {
+    add paths;
+    gateway recursive;
+    import filter {
+      if ( net ~ external_cidr ) then { reject; }
+      if ( local_community ~ bgp_community ) then { reject; }
+      accept;
+    };
+
+    export filter {
+      if ( source ~ [RTS_DEVICE] ) then { reject; }
+      if ( bgp_path ~ [cilium_asn] && net.len = 32 ) then { reject; }
+      if ( bgp_path ~ [cilium_asn] ) then { bgp_path.empty; }
+      accept;
+    };
+  };
+}
+
+protocol bgp cilium {
+  debug { states };
+  neighbor ::1 as cilium_asn;
+  local as my_asn;
+  passive;
+  multihop;
+
+  ipv4 {
+    extended next hop;
+    import filter {
+      ifname = "cilium_host";
+      bgp_community.add(local_community);
+      accept;
+    };
+    export none;
+  };
+
+  ipv6 {
+    import filter {
+      ifname = "cilium_host";
+      bgp_community.add(local_community);
+      accept;
+    };
+    export none;
+  };
+}

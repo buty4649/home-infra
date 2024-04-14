@@ -1,0 +1,33 @@
+rollOutCiliumPods: true
+kubeProxyReplacement: strict
+k8sServiceHost: 192.168.177.21
+k8sServicePort: 6443
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4PodCIDRList: 172.16.0.0/18
+    clusterPoolIPv4MaskSize: 24
+routingMode: native
+ipv4NativeRoutingCIDR: 172.16.0.0/18
+ipv4:
+  enabled: true
+enaleIPv4Masquerade: true
+ipMasqAgent:
+  enabled: false
+bgpControlPlane:
+  enabled: true
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+bpf:
+  masquerade: true
+tunnelProtocol: geneve
+loadBalancer:
+  mode: hybrid
+  dsrDispatch: geneve
+socketLB:
+  hostNamespaceOnly: true
+endpointRoutes:
+  enabled: true
