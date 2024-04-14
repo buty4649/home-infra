@@ -1,3 +1,4 @@
+rollOutCiliumPods: true
 kubeProxyReplacement: strict
 k8sServiceHost: 192.168.177.21
 k8sServicePort: 6443
